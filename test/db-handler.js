@@ -8,7 +8,6 @@ const mongod = new MongoMemoryServer();
  */
 module.exports.connect = async () => {
     const uri = await mongod.getConnectionString();
-
     const mongooseOpts = {
         useNewUrlParser: true,
         autoReconnect: true,
@@ -16,7 +15,8 @@ module.exports.connect = async () => {
         reconnectInterval: 1000
     };
 
-    await mongoose.connect(uri, mongooseOpts);
+    const db = await mongoose.connect(uri, mongooseOpts);
+    console.log(db.Model);
 }
 
 /**

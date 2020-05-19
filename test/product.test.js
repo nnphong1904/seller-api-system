@@ -19,6 +19,24 @@ afterAll(async () => await dbHandler.closeDatabase());
 /**
  * Product test suite.
  */
+describe('Add Product success',  ()=>{
+  it('Add product success', async ()=>{
+    const productObj = {
+      name: 'Diana Shipping inc.',
+      price: '38',
+      rating: '3',
+      brand: 'dior',
+      category: 'rompers/jumpsuits',
+      color: 'white-smoke',
+      avt: 'http://dummyimage.com/121x244.png/dddddd/000000',
+      sizesName: 'M, L, S',
+      sizesQuantity: '10, 20, 301'
+    };
+    const res = await addProduct(productObj);
+    expect(res.status).toEqual(201);
+    expect(res.success).toEqual(true);
+  })
+})
 describe('Constructor a new product success', ()=>{
 
   it('Create success', ()=>{
