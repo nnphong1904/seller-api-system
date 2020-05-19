@@ -36,6 +36,21 @@ describe('Add Product success',  ()=>{
     expect(res.status).toEqual(201);
     expect(res.success).toEqual(true);
   })
+  it('Add product failed', async ()=>{
+    const productObj = {
+      price: '38',
+      rating: '3',
+      brand: 'dior',
+      category: 'rompers/jumpsuits',
+      color: 'white-smoke',
+      avt: 'http://dummyimage.com/121x244.png/dddddd/000000',
+      sizesName: 'M, L, S',
+      sizesQuantity: '10, 20, 301'
+    };
+    const res = await addProduct(productObj);
+    expect(res.status).toEqual(400);
+    expect(res.success).toEqual(false);
+  })
 })
 describe('Constructor a new product success', ()=>{
 

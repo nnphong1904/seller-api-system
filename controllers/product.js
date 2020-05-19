@@ -3,6 +3,7 @@ module.exports.addProduct = async (product)=>{
     
     const newProductObjDecId = await Product.find({}).countDocuments('_id');
     let {sizesName, sizesQuantity, name, price, rating, avt, brand, category, color }=product;
+   
     sizesName=sizesName.split(',');
     sizesQuantity=sizesQuantity.split(',');
     const newSizes = [];
@@ -25,7 +26,9 @@ module.exports.addProduct = async (product)=>{
       }
    
     const newIdOfProduct = await newProductObj.save();
-    
+    if (!newIdOfProduct){
+      return {success: false, status: 400, content:'add product failed'};
+    }
    
     return {success: true, status: 201, content:'add product success'};
   
