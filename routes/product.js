@@ -5,10 +5,11 @@ router.get('/', (req, res)=>{
   res.json({title:"hello product"});
 })
 
-router.post('/', (req, res)=>{
+router.post('/', async (req, res)=>{
   const product = req.body;
-  addProduct(product);
-  res.end();
+  const responseAfterAddProduct = await addProduct(product); 
+  res.status(responseAfterAddProduct.status).json({responseContent: responseAfterAddProduct.content});
+  
 })
 
 module.exports = router;
