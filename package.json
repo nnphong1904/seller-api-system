@@ -2,9 +2,13 @@
 	"name": "seller-api-system",
 	"version": "0.0.0",
 	"private": true,
+	"jest": {
+		"testEnvironment": "node"
+	},
 	"scripts": {
 		"start": "NODE_ENV=production node ./bin/www",
-		"dev": "nodemon ./bin/www"
+		"dev": "nodemon ./bin/www",
+		"test": "jest --runInBand ./test"
 	},
 	"dependencies": {
 		"cookie-parser": "~1.4.4",
@@ -13,9 +17,12 @@
 		"express": "~4.16.1",
 		"http-errors": "~1.6.3",
 		"jade": "~1.11.0",
+		"mongoose": "^5.9.15",
 		"morgan": "~1.9.1"
 	},
 	"devDependencies": {
+		"jest": "^26.0.1",
+		"mongodb-memory-server": "^6.6.0",
 		"nodemon": "^2.0.4"
 	}
 }
