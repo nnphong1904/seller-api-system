@@ -74,10 +74,11 @@ module.exports.updateProduct = async (productId='', sizesName, sizesQuantity)=>{
     return {success: false, status:404, content:'product not found'};
   }
   let newSizesObject;
+
   if (generateSizesObject(sizesName, sizesQuantity) === null){
     return {success: false, status: 400, content:'fill in new sizes for product'};
   }
-  const oldProduct =  await Product.findById(productId);
+  const oldProduct =  await Product.findOne({_id:productId});
   if (oldProduct === null){
     return {success: false, status: 404, content: 'product not found'};
   }

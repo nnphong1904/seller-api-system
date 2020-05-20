@@ -8,6 +8,9 @@ module.exports.validateInputForAddProduct = (productInput)=>{
 } 
 
 module.exports.validateInputForSizeInput = (sizesName, sizesQuantity)=>{
+  if (sizesName === '' || sizesQuantity ===''){
+    return false;
+  }
   const lengthOfSizesName = sizesName.split(',').length;
   const lengthOfSizesQuantity = sizesQuantity.split(',').length;
   if (lengthOfSizesName !== lengthOfSizesQuantity){
