@@ -1,4 +1,4 @@
-const {addProduct} = require('../controllers/product');
+const {addProduct, deleteProduct} = require('../controllers/product');
 const dbHandler = require('./db-handler');
 const Product = require('../modules/product');
 const {validateInputForAddProduct} = require('../helper/product');
@@ -20,6 +20,36 @@ afterAll(async () => await dbHandler.closeDatabase());
 /**
  * Product test suite.
  */
+
+ describe('Delete product failed', ()=>{
+   it('delete success', async ()=>{
+    const productObj = {
+      name: 'Diana Shipping inc.',
+      price: '38',
+      rating: '3',
+      brand: 'dior',
+      category: 'rompers/jumpsuits',
+      color: 'white-smoke',
+      avt: 'http://dummyimage.com/121x244.png/dddddd/000000',
+      sizesName: 'M, L, S',
+      sizesQuantity: '10, 20, 301'
+    };
+    const resAfterAdd = await addProduct(productObj); 
+    const productId = resAfterAdd.productId;
+    const resAfterDelete = await deleteProduct(productId);
+    expect(resAfterAdd.status).toEqual(201);
+    expect(resAfterDelete.status).toEqual(200);
+    expect(resAfterDelete.productId).toEqual(productId);
+   })
+
+   it('delete failed', async ()=>{
+     const productId = '5ec4ae5ed55e0a0e259c4387';
+     const responseAfterDelete = await deleteProduct(productId);
+     expect(responseAfterDelete.status).toEqual(404);
+     expect(responseAfterDelete.productId).toEqual('');
+   })
+ })
+
 describe('Validate input for add new product', ()=>{
   it('validate success', ()=>{
     const productObj = {

@@ -8,7 +8,7 @@ const mongoose = require('mongoose');
 dotenv.config({path:'./config/config.env'});
 const indexRouter = require('./routes/index');
 const productRouter = require('./routes/product');
-mongoose.connect('mongodb://127.0.0.1:3001/meteor');
+mongoose.connect(process.env.MONGO_URL, { useNewUrlParser: true,  useUnifiedTopology: true });
 
 const app = express();
 
