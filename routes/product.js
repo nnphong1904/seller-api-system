@@ -18,4 +18,9 @@ router.delete('/:productId', async (req, res)=>{
   res.status(responseAfterDeleteProduct.status).json({productId:responseAfterDeleteProduct.productId});
 })
 
+router.put('/:productId', async (req, res)=>{
+  const productId = req.params.productId;
+  console.log(productId);
+  res.end();
+})
 module.exports = router;
