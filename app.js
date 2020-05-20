@@ -7,6 +7,7 @@ const dotenv = require('dotenv');
 const mongoose = require('mongoose');
 dotenv.config({path:'./config/config.env'});
 const indexRouter = require('./routes/index');
+const productRouter = require('./routes/product');
 mongoose.connect('mongodb://127.0.0.1:3001/meteor');
 
 const app = express();
@@ -21,7 +22,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
+app.use('/api/v1/product', productRouter);
 
 
 // catch 404 and forward to error handler
