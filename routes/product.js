@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const {addProduct, deleteProduct} = require('../controllers/product');
+const {addProduct, deleteProduct, updateProduct} = require('../controllers/product');
 router.get('/', (req, res)=>{
   res.json({title:"hello product"});
 })
@@ -20,7 +20,10 @@ router.delete('/:productId', async (req, res)=>{
 
 router.put('/:productId', async (req, res)=>{
   const productId = req.params.productId;
-  console.log(productId);
-  res.end();
+  const newSizesNameList = req.body.sizesName;
+  const newSizesNameQuantity = req.body.sizesQuantity;
+  const responseAfterUpdate = await updateProduct(productId, newSizesNameList, newSizesNameQuantity);
+  console.log(responseAfterUpdate);
+  res.status(responseAfterUpdate.status).json({productId: responseAfterUpdate.productId, content:responseAfterUpdate.content});
 })
 module.exports = router;
