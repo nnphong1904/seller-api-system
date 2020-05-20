@@ -65,6 +65,7 @@ describe('Validate input for add new product', ()=>{
     };
     expect(validateInputForAddProduct(productObj)).toEqual(true);
   })
+  
 
   it('validate failed with length of sizes name and sizes quantity after convert to array is not equal', ()=>{
     const productObj = {

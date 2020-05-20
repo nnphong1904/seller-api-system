@@ -4,7 +4,6 @@ const mongoose = require('mongoose');
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 const DAY = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 module.exports.addProduct = async (product)=>{
-
     if (validateInputForAddProduct(product) === false){
       return {success: false, status: 400, content:'add failed, you are missing some field'};
     }
@@ -13,6 +12,8 @@ module.exports.addProduct = async (product)=>{
    
     sizesName=sizesName.split(',');
     sizesQuantity=sizesQuantity.split(',');
+    const colorsList = color.split(',').map(color=>color.trim());
+    const categoryList = category.split(',').map(categoryElement=>categoryElement.trim());
     const day = new Date().getDay();
     let date = new Date().getDate();
     if(date === 1) {
@@ -37,7 +38,7 @@ module.exports.addProduct = async (product)=>{
         newSizes.push(size);
       }
     const newProduct = {
-                        name, price, rating, avt, brand,category , color,
+                        name, price, rating, avt, brand, category:[...categoryList] , color: [...colorsList],
                         decId: newProductObjDecId+1,sizes:[...newSizes], createAt
                       };
     const newProductObj = new Product(newProduct);

@@ -7,6 +7,6 @@ module.exports.validateInputForAddProduct = (productInput)=>{
   const lengthOfSizesQuantity = sizesQuantity.split(',').length;
   if (lengthOfSizesName !== lengthOfSizesQuantity){
     return false;
-  }
+  } 
   return true;
 } 
