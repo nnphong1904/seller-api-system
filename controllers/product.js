@@ -1,5 +1,6 @@
 const Product = require('../modules/product');
 const {validateInputForAddProduct} = require('../helper/product');
+const mongoose = require('mongoose');
 module.exports.addProduct = async (product)=>{
 
     if (validateInputForAddProduct(product) === false){
@@ -30,14 +31,19 @@ module.exports.addProduct = async (product)=>{
       }
    
     const newIdOfProduct = await newProductObj.save();
+    
     if (!newIdOfProduct){
       return {success: false, status: 400, content:'add product failed'};
     }
    
-    return {success: true, status: 201, content:'add product success'};
+    return {success: true, status: 201, content:'add product success', productId: newIdOfProduct._id};
   
 };
 
-module.exports.deleteProduct = async (req, res)=>{
-  
+module.exports.deleteProduct = async (productId='')=>{
+  const responseAfterDelete = await Product.findOneAndDelete({_id: productId});
+  if (responseAfterDelete === null){
+    return {success: false, status:404, content:'product does not exist', productId:''};
+  }
+  return {success: true, status: 200, content:'remove product success', productId:responseAfterDelete._id};
 }
