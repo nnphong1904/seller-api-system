@@ -1,7 +1,7 @@
 const Product = require('../modules/product');
 const {validateInputForAddProduct} = require('../helper/product');
 module.exports.addProduct = async (product)=>{
-    
+
     if (validateInputForAddProduct(product) === false){
       return {success: false, status: 400, content:'add failed, you are missing some field'};
     }
@@ -37,3 +37,7 @@ module.exports.addProduct = async (product)=>{
     return {success: true, status: 201, content:'add product success'};
   
 };
+
+module.exports.deleteProduct = async (req, res)=>{
+  
+}

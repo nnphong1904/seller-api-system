@@ -36,7 +36,203 @@ describe('Validate input for add new product', ()=>{
     expect(validateInputForAddProduct(productObj)).toEqual(true);
   })
 
-  it('validate failed without name input field', ()=>{
+  it('validate failed with length of sizes name and sizes quantity after convert to array is not equal', ()=>{
+    const productObj = {
+      name: 'Diana Shipping inc.',
+      price: '38',
+      rating: '3',
+      brand: 'dior',
+      category: 'rompers/jumpsuits',
+      color: 'white-smoke',
+      avt: 'http://dummyimage.com/121x244.png/dddddd/000000',
+      sizesName: 'M, L',
+      sizesQuantity: '10, 20, 301'
+    };
+    expect(validateInputForAddProduct(productObj)).toEqual(false);
+  })
+
+  it('validate failed with rating and avt input empty', ()=>{
+    const productObj = {
+      name: 'Diana Shipping inc.',
+      price: '38',
+      rating: '',
+      brand: 'dior',
+      category: 'rompers/jumpsuits',
+      color: 'white-smoke',
+      avt: '',
+      sizesName: 'M, L, S',
+      sizesQuantity: '10, 20, 301'
+    };
+    expect(validateInputForAddProduct(productObj)).toEqual(false);
+  })
+
+  it('validate failed with brand and color input empty', ()=>{
+    const productObj = {
+      name: 'Diana Shipping inc.',
+      price: '38',
+      rating: '3',
+      brand: '',
+      category: 'rompers/jumpsuits',
+      color: '',
+      avt: 'http://dummyimage.com/121x244.png/dddddd/000000',
+      sizesName: 'M, L, S',
+      sizesQuantity: '10, 20, 301'
+    };
+    expect(validateInputForAddProduct(productObj)).toEqual(false);
+  })
+
+  it('validate failed with name and price input empty', ()=>{
+    const productObj = {
+      name: '',
+      price: '',
+      rating: '3',
+      brand: 'dior',
+      category: 'rompers/jumpsuits',
+      color: 'white-smoke',
+      avt: 'http://dummyimage.com/121x244.png/dddddd/000000',
+      sizesName: 'M, L, S',
+      sizesQuantity: '10, 20, 301'
+    };
+    expect(validateInputForAddProduct(productObj)).toEqual(false);
+  })
+
+  it('validate failed with input sizes quantity empty', ()=>{
+    const productObj = {
+      name: 'Diana Shipping inc.',
+      price: '38',
+      rating: '3',
+      brand: 'dior',
+      category: 'rompers/jumpsuits',
+      color: 'white-smoke',
+      avt: 'http://dummyimage.com/121x244.png/dddddd/000000',
+      sizesName: 'M, L, S',
+      sizesQuantity: ''
+    };
+    expect(validateInputForAddProduct(productObj)).toEqual(false);
+  })
+
+  it('validate failed with input sizes name empty', ()=>{
+    const productObj = {
+      name: 'Diana Shipping inc.',
+      price: '38',
+      rating: '3',
+      brand: 'dior',
+      category: 'rompers/jumpsuits',
+      color: 'white-smoke',
+      avt: 'http://dummyimage.com/121x244.png/dddddd/000000',
+      sizesName: '',
+      sizesQuantity: '10, 20, 301'
+    };
+    expect(validateInputForAddProduct(productObj)).toEqual(false);
+  })
+
+  it('validate failed with input sizes name empty', ()=>{
+    const productObj = {
+      name: 'Diana Shipping inc.',
+      price: '38',
+      rating: '3',
+      brand: 'dior',
+      category: 'rompers/jumpsuits',
+      color: 'white-smoke',
+      avt: 'http://dummyimage.com/121x244.png/dddddd/000000',
+      sizesName: '',
+      sizesQuantity: '10, 20, 301'
+    };
+    expect(validateInputForAddProduct(productObj)).toEqual(false);
+  })
+
+  it('validate failed with avatar input empty', ()=>{
+    const productObj = {
+      name: 'Diana Shipping inc.',
+      price: '38',
+      rating: '3',
+      brand: 'dior',
+      category: 'rompers/jumpsuits',
+      color: 'white-smoke',
+      avt: '',
+      sizesName: 'M, L, S',
+      sizesQuantity: '10, 20, 301'
+    };
+    expect(validateInputForAddProduct(productObj)).toEqual(false);
+  })
+
+  it('validate failed with color input empty', ()=>{
+    const productObj = {
+      name: 'Diana Shipping inc.',
+      price: '38',
+      rating: '3',
+      brand: 'dior',
+      category: 'rompers/jumpsuits',
+      color: '',
+      avt: 'http://dummyimage.com/121x244.png/dddddd/000000',
+      sizesName: 'M, L, S',
+      sizesQuantity: '10, 20, 301'
+    };
+    expect(validateInputForAddProduct(productObj)).toEqual(false);
+  })
+
+  it('validate failed with category input empty', ()=>{
+    const productObj = {
+      name: 'Diana Shipping inc.',
+      price: '38',
+      rating: '3',
+      brand: 'dior',
+      category: '',
+      color: 'white-smoke',
+      avt: 'http://dummyimage.com/121x244.png/dddddd/000000',
+      sizesName: 'M, L, S',
+      sizesQuantity: '10, 20, 301'
+    };
+    expect(validateInputForAddProduct(productObj)).toEqual(false);
+  })
+
+  it('validate failed with brand input empty', ()=>{
+    const productObj = {
+      name: 'Diana Shipping inc.',
+      price: '38',
+      rating: '3',
+      brand: '',
+      category: 'rompers/jumpsuits',
+      color: 'white-smoke',
+      avt: 'http://dummyimage.com/121x244.png/dddddd/000000',
+      sizesName: 'M, L, S',
+      sizesQuantity: '10, 20, 301'
+    };
+    expect(validateInputForAddProduct(productObj)).toEqual(false);
+  })
+
+  it('validate failed without rating input', ()=>{
+    const productObj = {
+      name: 'Diana Shipping inc.',
+      price: '38',
+      rating: '',
+      brand: 'dior',
+      category: 'rompers/jumpsuits',
+      color: 'white-smoke',
+      avt: 'http://dummyimage.com/121x244.png/dddddd/000000',
+      sizesName: 'M, L, S',
+      sizesQuantity: '10, 20, 301'
+    };
+    expect(validateInputForAddProduct(productObj)).toEqual(false);
+  })
+
+
+  it('validate failed with price input empty', ()=>{
+    const productObj = {
+      name: 'Diana Shipping inc.',
+      price: '',
+      rating: '3',
+      brand: 'dior',
+      category: 'rompers/jumpsuits',
+      color: 'white-smoke',
+      avt: 'http://dummyimage.com/121x244.png/dddddd/000000',
+      sizesName: 'M, L, S',
+      sizesQuantity: '10, 20, 301'
+    };
+    expect(validateInputForAddProduct(productObj)).toEqual(false);
+  })
+
+  it('validate failed with name input empty', ()=>{
     const productObj = {
       name: '',
       price: '38',
@@ -50,6 +246,8 @@ describe('Validate input for add new product', ()=>{
     };
     expect(validateInputForAddProduct(productObj)).toEqual(false);
   })
+
+  
 })
 
 describe('Add Product success',  ()=>{
