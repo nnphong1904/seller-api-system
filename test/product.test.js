@@ -458,7 +458,6 @@ describe('Constructor a new product success', ()=>{
       color:'white-smoke',
       decId: 1, 
       sizes: [{size:'M',noItems:30}],
-      createAt: 'Wed, 20th, May, 2020'
     };
     const newProductObj = new Product(productObj1);
     const newProductObjError = newProductObj.validateSync();
@@ -482,24 +481,7 @@ describe('Constructor a new product failed', ()=>{
     const errMessage =  newProductObj8Error.errors['sizes'].message;
     expect(errMessage).toEqual('no size for product');
   })
-  it('Create without createAt',()=>{
-    const productObj1 = {
-      name:'Diana Shipping inc.',
-      price: 38,
-      rating: 3, 
-      avt: 'http://dummyimage.com/121x244.png/dddddd/000000',
-      brand: 'dior',
-      category: 'rompers/jumpsuits',
-      color:'white-smoke',
-      decId: 1, 
-      sizes: [{size:'M',noItems:30}],
-      // createAt: 'Wed, 20th, May, 2020'
-    };
-    const newProductObj = new Product(productObj1);
-    const newProductObjError = newProductObj.validateSync();
-    const errMessage = newProductObjError.errors['createAt'].message;
-    expect(errMessage).toEqual('no create day');
-  })
+  
   it('Create without decId', ()=>{
     const productObj8 = {
       name:'Diana Shipping inc.',
