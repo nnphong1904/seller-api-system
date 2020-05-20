@@ -7,7 +7,7 @@ router.get('/', (req, res)=>{
 
 router.post('/', async (req, res)=>{
   const product = req.body;
-  console.log(req.body);
+  // console.log(req.body);
   const responseAfterAddProduct = await addProduct(product); 
   res.status(responseAfterAddProduct.status).json({responseContent: responseAfterAddProduct.content});
   

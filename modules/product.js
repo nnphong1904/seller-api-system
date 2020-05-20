@@ -12,7 +12,8 @@ const ProductSchema  = new mongoose.Schema({
   decId: {type: Number, required: [true, 'some thing broken in source code at route POST product']},
   sizes: {type: Array, 
           required: true, 
-          validate: [(sizes)=>sizes.length > 0, 'no size for product']}
+          validate: [(sizes)=>sizes.length > 0, 'no size for product']},
+  createAt: {type: String, required:[true, 'no create day']}
 })
 
 const Product = mongoose.model('product',ProductSchema,'product');

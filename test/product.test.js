@@ -326,9 +326,12 @@ describe('Constructor a new product success', ()=>{
       category: 'rompers/jumpsuits',
       color:'white-smoke',
       decId: 1, 
-      sizes: [{size:'M',noItems:30}]
+      sizes: [{size:'M',noItems:30}],
+      createAt: 'Wed, 20th, May, 2020'
     };
-    expect(new Product(productObj1)).toHaveProperty('_id');
+    const newProductObj = new Product(productObj1);
+    const newProductObjError = newProductObj.validateSync();
+    expect(newProductObjError).toEqual(undefined);
   })
 })
 
@@ -348,7 +351,9 @@ describe('Constructor a new product failed', ()=>{
     const errMessage =  newProductObj8Error.errors['sizes'].message;
     expect(errMessage).toEqual('no size for product');
   })
+  it('Create without createAt',()=>{
 
+  })
   it('Create without decId', ()=>{
     const productObj8 = {
       name:'Diana Shipping inc.',

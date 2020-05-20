@@ -1,6 +1,8 @@
 const Product = require('../modules/product');
 const {validateInputForAddProduct} = require('../helper/product');
 const mongoose = require('mongoose');
+const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const DAY = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 module.exports.addProduct = async (product)=>{
 
     if (validateInputForAddProduct(product) === false){
@@ -11,6 +13,24 @@ module.exports.addProduct = async (product)=>{
    
     sizesName=sizesName.split(',');
     sizesQuantity=sizesQuantity.split(',');
+    const day = new Date().getDay();
+    let date = new Date().getDate();
+    if(date === 1) {
+      date = `${date}st`;
+    }
+    else if (date === 2){
+      date = `${date}nd`;
+    }
+    else if (date === 3){
+      date = `${date}rd`;
+    }
+    else {
+      date = `${date}th`;
+    }
+    const month = new Date().getMonth();
+    const year = new Date().getFullYear();
+    const createAt = `${DAY[day]}, ${date}, ${MONTHS[month]}, ${year}`;
+
     const newSizes = [];
       for (let i=0; i<sizesQuantity.length; i++){
         const size={size: sizesName[i], noItems: parseInt(sizesQuantity[i])};
@@ -18,12 +38,11 @@ module.exports.addProduct = async (product)=>{
       }
     const newProduct = {
                         name, price, rating, avt, brand,category , color,
-                        decId: newProductObjDecId+1,sizes:[...newSizes] 
+                        decId: newProductObjDecId+1,sizes:[...newSizes], createAt
                       };
     const newProductObj = new Product(newProduct);
-    
     const newProductObjError = newProductObj.validateSync();
-    
+    console.log(newProductObjError);
    
       if (newProductObjError){
         let errMessage = newProductObjError._message;
