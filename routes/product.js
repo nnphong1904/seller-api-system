@@ -1,7 +1,9 @@
 const express = require('express');
 const router = express.Router();
+const {authenticationForSeller} = require('../middleware/auth');
 const {addProduct, deleteProduct, updateProduct} = require('../controllers/product');
-router.get('/', (req, res)=>{
+router.get('/',  (req, res)=>{
+  // console.log(req.headers.authorization)
   res.json({title:"hello product"});
 })
 

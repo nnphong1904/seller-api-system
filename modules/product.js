@@ -17,7 +17,7 @@ const ProductSchema  = new mongoose.Schema({
   sizes: {type: Array, 
           required: true, 
           validate: [(sizes)=>sizes.length > 0, 'no size for product']},
-  createAt: {type: String, required:[true, 'no create day']}
+  createAt: {type: String, default: Date.now()}
 })
 
 const Product = mongoose.model('product',ProductSchema,'product');

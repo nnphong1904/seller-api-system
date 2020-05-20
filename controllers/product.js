@@ -16,33 +16,11 @@ module.exports.addProduct = async (product)=>{
     // sizesQuantity=sizesQuantity.split(',');
     const colorsList = color.split(',').map(color=>color.trim());
     const categoryList = category.split(',').map(categoryElement=>categoryElement.trim());
-    const day = new Date().getDay();
-    let date = new Date().getDate();
-    if(date === 1) {
-      date = `${date}st`;
-    }
-    else if (date === 2){
-      date = `${date}nd`;
-    }
-    else if (date === 3){
-      date = `${date}rd`;
-    }
-    else {
-      date = `${date}th`;
-    }
-    const month = new Date().getMonth();
-    const year = new Date().getFullYear();
-    const createAt = `${DAY[day]}, ${date}, ${MONTHS[month]}, ${year}`;
-
-    // const newSizes = [];
-    //   for (let i=0; i<sizesQuantity.length; i++){
-    //     const size={size: sizesName[i], noItems: parseInt(sizesQuantity[i])};
-    //     newSizes.push(size);
-    //   }
+    
     const newSizes = [...generateSizesObject(sizesName, sizesQuantity)];
     const newProduct = {
                         name, price, rating, avt, brand, category:[...categoryList] , color: [...colorsList],
-                        decId: newProductObjDecId+1,sizes:[...newSizes], createAt
+                        decId: newProductObjDecId+1,sizes:[...newSizes]
                       };
     const newProductObj = new Product(newProduct);
     const newProductObjError = newProductObj.validateSync();
