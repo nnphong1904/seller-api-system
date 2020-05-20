@@ -1,6 +1,7 @@
 const {addProduct} = require('../controllers/product');
 const dbHandler = require('./db-handler');
 const Product = require('../modules/product');
+const {validateInputForAddProduct} = require('../helper/product');
 /**
  * Connect to a new in-memory database before running any tests.
  */
@@ -19,8 +20,41 @@ afterAll(async () => await dbHandler.closeDatabase());
 /**
  * Product test suite.
  */
+describe('Validate input for add new product', ()=>{
+  it('validate success', ()=>{
+    const productObj = {
+      name: 'Diana Shipping inc.',
+      price: '38',
+      rating: '3',
+      brand: 'dior',
+      category: 'rompers/jumpsuits',
+      color: 'white-smoke',
+      avt: 'http://dummyimage.com/121x244.png/dddddd/000000',
+      sizesName: 'M, L, S',
+      sizesQuantity: '10, 20, 301'
+    };
+    expect(validateInputForAddProduct(productObj)).toEqual(true);
+  })
+
+  it('validate failed without name input field', ()=>{
+    const productObj = {
+      name: '',
+      price: '38',
+      rating: '3',
+      brand: 'dior',
+      category: 'rompers/jumpsuits',
+      color: 'white-smoke',
+      avt: 'http://dummyimage.com/121x244.png/dddddd/000000',
+      sizesName: 'M, L, S',
+      sizesQuantity: '10, 20, 301'
+    };
+    expect(validateInputForAddProduct(productObj)).toEqual(false);
+  })
+})
+
 describe('Add Product success',  ()=>{
   it('Add product success', async ()=>{
+    
     const productObj = {
       name: 'Diana Shipping inc.',
       price: '38',

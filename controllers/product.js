@@ -1,6 +1,10 @@
 const Product = require('../modules/product');
+const {validateInputForAddProduct} = require('../helper/product');
 module.exports.addProduct = async (product)=>{
     
+    if (validateInputForAddProduct(product) === false){
+      return {success: false, status: 400, content:'add failed, you are missing some field'};
+    }
     const newProductObjDecId = await Product.find({}).countDocuments('_id');
     let {sizesName, sizesQuantity, name, price, rating, avt, brand, category, color }=product;
    
