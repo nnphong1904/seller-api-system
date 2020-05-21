@@ -170,6 +170,13 @@ describe('Validate input of user', ()=>{
     expect(sizesObj).toEqual(null);
   })
 
+  it('generate sizes object failed with sizesName and sizeQuantity is empty stirng', ()=>{
+    const sizesName = '';
+    const sizesQuantity = '';
+    const sizesObj = generateSizesObject(sizesName, sizesQuantity);
+    expect(sizesObj).toEqual(null);
+  })
+
   it('user input sizes filed wrong size quantity have length longer than size name field', ()=>{
     const sizesName = 'M, S';
     const sizesQuantity = '10, 20, 301';

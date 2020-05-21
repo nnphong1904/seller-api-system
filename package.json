@@ -8,7 +8,7 @@
 	"scripts": {
 		"start": "NODE_ENV=production node ./bin/www",
 		"dev": "nodemon ./bin/www",
-		"test": "jest --runInBand ./test"
+		"test": "jest --runInBand --coverage --coverageDirectory='coverage' ./test"
 	},
 	"dependencies": {
 		"cookie-parser": "~1.4.4",
