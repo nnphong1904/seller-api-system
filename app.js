@@ -6,7 +6,7 @@ const logger = require('morgan');
 const dotenv = require('dotenv');
 const mongoose = require('mongoose');
 dotenv.config({path:'./config/config.env'});
-const indexRouter = require('./routes/index');
+const {authenticationForSeller} = require('./middleware/auth');
 const productRouter = require('./routes/product');
 mongoose.connect(process.env.MONGO_URL, { useNewUrlParser: true,  useUnifiedTopology: true });
 
@@ -22,7 +22,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/api/v1/product', productRouter);
+app.use('/api/v1/product',authenticationForSeller ,productRouter);
 
 
 // catch 404 and forward to error handler

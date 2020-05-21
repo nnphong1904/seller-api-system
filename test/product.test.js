@@ -1,7 +1,7 @@
-const {addProduct, deleteProduct} = require('../controllers/product');
+const {addProduct, deleteProduct, updateProduct} = require('../controllers/product');
 const dbHandler = require('./db-handler');
 const Product = require('../modules/product');
-const {validateInputForAddProduct} = require('../helper/product');
+const {validateInputForAddProduct, validateInputForSizeInput, generateSizesObject} = require('../helper/product');
 /**
  * Connect to a new in-memory database before running any tests.
  */
@@ -20,8 +20,92 @@ afterAll(async () => await dbHandler.closeDatabase());
 /**
  * Product test suite.
  */
+ 
+ describe('Update product', ()=>{
+   it('Update success', async ()=>{
+     const productObj = {
+      name: 'Diana Shipping inc.',
+      price: '38',
+      rating: '3',
+      brand: 'dior',
+      category: 'rompers/jumpsuits',
+      color: 'white-smoke',
+      avt: 'http://dummyimage.com/121x244.png/dddddd/000000',
+      sizesName: 'M, L, S',
+      sizesQuantity: '10, 20, 301'
+     };
+     const resAfterAdd = await addProduct(productObj); 
+     const productId = resAfterAdd.productId;
+     const resAfterUpdate = await updateProduct(productId, productObj.sizesName, productObj.sizesQuantity);  
+     expect(resAfterAdd.status).toEqual(201);
+     expect(resAfterUpdate.status).toEqual(200);
+     expect(resAfterUpdate.productId).toEqual(productId);
+   })
 
- describe('Delete product failed', ()=>{
+   it('Update failed product id is empty', async ()=>{
+    const productObj = {
+     name: 'Diana Shipping inc.',
+     price: '38',
+     rating: '3',
+     brand: 'dior',
+     category: 'rompers/jumpsuits',
+     color: 'white-smoke',
+     avt: 'http://dummyimage.com/121x244.png/dddddd/000000',
+     sizesName: 'M, S, L',
+     sizesQuantity: '10, 20, 301'
+    };
+    const resAfterAdd = await addProduct(productObj); 
+    const productId = '';
+    const resAfterUpdate = await updateProduct(productId, productObj.sizesName, productObj.sizesQuantity);  
+    
+    expect(resAfterUpdate.status).toEqual(404);
+  
+  })
+
+
+   it('Update failed can not found product', async ()=>{
+    const productObj = {
+     name: 'Diana Shipping inc.',
+     price: '38',
+     rating: '3',
+     brand: 'dior',
+     category: 'rompers/jumpsuits',
+     color: 'white-smoke',
+     avt: 'http://dummyimage.com/121x244.png/dddddd/000000',
+     sizesName: 'M, S, L',
+     sizesQuantity: '10, 20, 301'
+    };
+    const resAfterAdd = await addProduct(productObj); 
+    const productId = '5ec4c6b3549ee716866558d1';
+    const resAfterUpdate = await updateProduct(productId, productObj.sizesName, productObj.sizesQuantity);  
+    
+    expect(resAfterUpdate.status).toEqual(404);
+  
+  })
+
+   it('Update failed sizesName length longer than sizesQuantity', async ()=>{
+     const productObj = {
+      name: 'Diana Shipping inc.',
+      price: '38',
+      rating: '3',
+      brand: 'dior',
+      category: 'rompers/jumpsuits',
+      color: 'white-smoke',
+      avt: 'http://dummyimage.com/121x244.png/dddddd/000000',
+      sizesName: 'M, S, L',
+      sizesQuantity: '10, 20, 301'
+     };
+     const newSizesName = 'S, L';
+     const newSizesQuantity ='10';               
+     const resAfterAdd = await addProduct(productObj); 
+     const productId = resAfterAdd.productId;
+     const resAfterUpdate = await updateProduct(productId, newSizesName, newSizesQuantity);  
+    expect(resAfterUpdate.status).toEqual(400);
+  })
+
+ })
+
+ describe('Delete product ', ()=>{
    it('delete success', async ()=>{
     const productObj = {
       name: 'Diana Shipping inc.',
@@ -50,8 +134,8 @@ afterAll(async () => await dbHandler.closeDatabase());
    })
  })
 
-describe('Validate input for add new product', ()=>{
-  it('validate success', ()=>{
+describe('Validate input of user', ()=>{
+  it('check if user input correct', ()=>{
     const productObj = {
       name: 'Diana Shipping inc.',
       price: '38',
@@ -65,12 +149,66 @@ describe('Validate input for add new product', ()=>{
     };
     expect(validateInputForAddProduct(productObj)).toEqual(true);
   })
+  
+  it('user input sizes filed wrong', ()=>{
+    const sizesName = 'M, L, S';
+    const sizesQuantity = '10, 20, 301';
+    expect(validateInputForSizeInput(sizesName, sizesQuantity)).toEqual(true);
+  })
 
-  it('validate failed with length of sizes name and sizes quantity after convert to array is not equal', ()=>{
+  it('generate sizes object success', ()=>{
+    const sizesName = 'M, L, S';
+    const sizesQuantity = '10, 20, 301';
+    const sizesLength =sizesQuantity.split(',').length;
+    expect(generateSizesObject(sizesName, sizesQuantity).length).toEqual(sizesLength);
+  })
+  
+  it('generate sizes object failed', ()=>{
+    const sizesName = 'M, L';
+    const sizesQuantity = '10, 20, 301';
+    const sizesObj = generateSizesObject(sizesName, sizesQuantity);
+    expect(sizesObj).toEqual(null);
+  })
+
+  it('generate sizes object failed with sizesName and sizeQuantity is empty stirng', ()=>{
+    const sizesName = '';
+    const sizesQuantity = '';
+    const sizesObj = generateSizesObject(sizesName, sizesQuantity);
+    expect(sizesObj).toEqual(null);
+  })
+
+  it('user input sizes filed wrong size quantity have length longer than size name field', ()=>{
+    const sizesName = 'M, S';
+    const sizesQuantity = '10, 20, 301';
+    expect(validateInputForSizeInput(sizesName, sizesQuantity)).toEqual(false);
+  })
+
+  it('user input sizes filed wrong size quantity have length shorter than size name field', ()=>{
+    const sizesName = 'M, S';
+    const sizesQuantity = '10';
+    expect(validateInputForSizeInput(sizesName, sizesQuantity)).toEqual(false);
+  })
+
+  it('check if user missed name field', ()=>{
     const productObj = {
-      name: 'Diana Shipping inc.',
+      name: '',
       price: '38',
       rating: '3',
+      brand: 'dior',
+      category: 'rompers/jumpsuits',
+      color: 'white-smoke',
+      avt: 'http://dummyimage.com/121x244.png/dddddd/000000',
+      sizesName: 'M, L, S',
+      sizesQuantity: '10, 20, 301'
+    };
+    expect(validateInputForAddProduct(productObj)).toEqual(false);
+  })
+
+  it('check if user missed price and rating fields', ()=>{
+    const productObj = {
+      name: 'Diana Shipping inc.',
+      price: '',
+      rating: '',
       brand: 'dior',
       category: 'rompers/jumpsuits',
       color: 'white-smoke',
@@ -326,9 +464,11 @@ describe('Constructor a new product success', ()=>{
       category: 'rompers/jumpsuits',
       color:'white-smoke',
       decId: 1, 
-      sizes: [{size:'M',noItems:30}]
+      sizes: [{size:'M',noItems:30}],
     };
-    expect(new Product(productObj1)).toHaveProperty('_id');
+    const newProductObj = new Product(productObj1);
+    const newProductObjError = newProductObj.validateSync();
+    expect(newProductObjError).toEqual(undefined);
   })
 })
 
@@ -348,7 +488,7 @@ describe('Constructor a new product failed', ()=>{
     const errMessage =  newProductObj8Error.errors['sizes'].message;
     expect(errMessage).toEqual('no size for product');
   })
-
+  
   it('Create without decId', ()=>{
     const productObj8 = {
       name:'Diana Shipping inc.',
