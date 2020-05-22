@@ -54,7 +54,6 @@ afterAll(async () => await dbHandler.closeDatabase());
      sizesName: 'M, S, L',
      sizesQuantity: '10, 20, 301'
     };
-    const resAfterAdd = await addProduct(productObj); 
     const productId = '';
     const resAfterUpdate = await updateProduct(productId, productObj.sizesName, productObj.sizesQuantity);  
     
@@ -126,12 +125,18 @@ afterAll(async () => await dbHandler.closeDatabase());
     expect(resAfterDelete.productId).toEqual(productId);
    })
 
-   it('delete failed', async ()=>{
+   it('delete failed with wrong productId', async ()=>{
      const productId = '5ec4ae5ed55e0a0e259c4387';
      const responseAfterDelete = await deleteProduct(productId);
      expect(responseAfterDelete.status).toEqual(404);
      expect(responseAfterDelete.productId).toEqual('');
    })
+   it('delete failed with wrong empty productId', async ()=>{
+    const productId = '';
+    const responseAfterDelete = await deleteProduct(productId);
+    expect(responseAfterDelete.status).toEqual(400);
+    expect(responseAfterDelete.content).toEqual('product id is empty');
+  })
  })
 
 describe('Validate input of user', ()=>{
@@ -436,7 +441,7 @@ describe('Add Product success',  ()=>{
     expect(res.status).toEqual(201);
     expect(res.success).toEqual(true);
   })
-  it('Add product failed', async ()=>{
+  it('Add product failed without name field', async ()=>{
     const productObj = {
       price: '38',
       rating: '3',
@@ -448,6 +453,41 @@ describe('Add Product success',  ()=>{
       sizesQuantity: '10, 20, 301'
     };
     const res = await addProduct(productObj);
+    console.log(res.content);
+    expect(res.status).toEqual(400);
+    expect(res.success).toEqual(false);
+  })
+  it('Add product failed without price and rating fields empty', async ()=>{
+    const productObj = {
+      name: 'Diana Shipping inc.',
+      price: '',
+      rating: '',
+      brand: 'dior',
+      category: 'rompers/jumpsuits',
+      color: 'white-smoke',
+      avt: 'http://dummyimage.com/121x244.png/dddddd/000000',
+      sizesName: 'M, L, S',
+      sizesQuantity: '10, 20, 301'
+    };
+    const res = await addProduct(productObj);
+    console.log(res.content);
+    expect(res.status).toEqual(400);
+    expect(res.success).toEqual(false);
+  })
+  it('Add product failed with length of sizesName and sizesQuantity is different ', async ()=>{
+    const productObj = {
+      name: 'Diana Shipping inc.',
+      price: '36',
+      rating: '4',
+      brand: 'dior',
+      category: 'rompers/jumpsuits',
+      color: 'white-smoke',
+      avt: 'http://dummyimage.com/121x244.png/dddddd/000000',
+      sizesName: 'M, L',
+      sizesQuantity: '10, 20, 301'
+    };
+    const res = await addProduct(productObj);
+    console.log(res.content);
     expect(res.status).toEqual(400);
     expect(res.success).toEqual(false);
   })
