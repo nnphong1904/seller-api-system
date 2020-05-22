@@ -25,24 +25,23 @@ module.exports.addProduct = async (product)=>{
                           };
         const newProductObj = new Product(newProduct);
         const newProductObjError = newProductObj.validateSync();
-      
+        
           if (newProductObjError){
             let errMessage = newProductObjError._message;
             return {success: false, status: 400, content:errMessage};
           }
       
         const newIdOfProduct = await newProductObj.save();
-        
-        if (!newIdOfProduct){
-          return {success: false, status: 400, content:'add product failed'};
-        }
       
         return {success: true, status: 201, content:'add product success', productId: newIdOfProduct._id};
       }
     }
 };
 
-module.exports.deleteProduct = async (productId='')=>{
+module.exports.deleteProduct = async (productId)=>{
+  if (!productId){
+    return {success: false, status: 400, content:'product id is empty'};
+  }
   const responseAfterDelete = await Product.findOneAndDelete({_id: productId});
   if (responseAfterDelete === null){
     return {success: false, status:404, content:'product does not exist', productId:''};
@@ -51,8 +50,8 @@ module.exports.deleteProduct = async (productId='')=>{
     return {success: true, status: 200, content:'remove product success', productId:responseAfterDelete._id};
   }
 }
-module.exports.updateProduct = async (productId='', sizesName, sizesQuantity)=>{
-  if (productId === ''){
+module.exports.updateProduct = async (productId, sizesName, sizesQuantity)=>{
+  if (!productId){
     return {success: false, status:404, content:'product not found'};
   }
   else
