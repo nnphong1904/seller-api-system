@@ -5,6 +5,7 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const dotenv = require('dotenv');
 const mongoose = require('mongoose');
+const cors = require('cors');
 dotenv.config({path:'./config/config.env'});
 const {authenticationForSeller} = require('./middleware/auth');
 const productRouter = require('./routes/product');
@@ -12,6 +13,7 @@ mongoose.connect(process.env.MONGO_URL, { useNewUrlParser: true,  useUnifiedTopo
 
 const app = express();
 
+app.use(cors());
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
