@@ -8,9 +8,9 @@ module.exports.addProduct = async (product)=>{
       return {success: false, status: 400, content:'add failed, you are missing some field'};
     }
     else{
-      const newProductObjDecId = await Product.find({}).countDocuments('_id');
-      let {sizesName, sizesQuantity, name, price, rating, avt, brand, category, color } = product;
-      
+      const newProductObjDecId = await Product.find({}).countDocuments('_id')+1;
+      let {sizesName, sizesQuantity, name, price, avt, brand, category, color } = product;
+      const rating = '0';
       if (validateInputForSizeInput(sizesName, sizesQuantity) === false){
         return {success: false, status: 400, content: 'add failed, you forget to input quantity of some size'};
       }
