@@ -33,10 +33,11 @@ router.delete('/:productId', async (req, res)=>{
   res.status(responseAfterDeleteProduct.status).json({productId:responseAfterDeleteProduct.productId});
 })
 
-router.put('/:productId', async (req, res)=>{
+router.put('/:productId', upload.none() ,async (req, res)=>{
   const productId = req.params.productId;
   const newSizesNameList = req.body.sizesName;
   const newSizesNameQuantity = req.body.sizesQuantity;
+  
   const responseAfterUpdate = await updateProduct(productId, newSizesNameList, newSizesNameQuantity);
   console.log(responseAfterUpdate);
   res.status(responseAfterUpdate.status).json({productId: responseAfterUpdate.productId, content:responseAfterUpdate.content});

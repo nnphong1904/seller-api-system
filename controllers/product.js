@@ -72,7 +72,8 @@ module.exports.updateProduct = async (productId, sizesName, sizesQuantity)=>{
       }
       else{
         newSizesObject = [...generateSizesObject(sizesName,sizesQuantity)];
-        const newProduct = {...oldProduct._doc, sizes: {...newSizesObject}};
+    
+        const newProduct = {...oldProduct._doc, sizes: [...newSizesObject]};
         const responseAfterUpdate = await Product.findByIdAndUpdate(productId, newProduct, {new:true });
         return {success: true, status: 200, content: 'update success', productId: responseAfterUpdate._id};
       }
