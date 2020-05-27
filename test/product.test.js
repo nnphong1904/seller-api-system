@@ -36,7 +36,7 @@ afterAll(async () => await dbHandler.closeDatabase());
      };
      const resAfterAdd = await addProduct(productObj); 
      const productId = resAfterAdd.productId;
-     const resAfterUpdate = await updateProduct(productId, productObj.sizesName, productObj.sizesQuantity);  
+     const resAfterUpdate = await updateProduct(productId, productObj.sizesName, productObj.sizesQuantity, productObj.category);  
      expect(resAfterAdd.status).toEqual(201);
      expect(resAfterUpdate.status).toEqual(200);
      expect(resAfterUpdate.productId).toEqual(productId);
@@ -61,6 +61,27 @@ afterAll(async () => await dbHandler.closeDatabase());
   
   })
 
+  it('Update failed can not generate sizes object', async ()=>{
+    const productObj = {
+     name: 'Diana Shipping inc.',
+     price: '38',
+     rating: '3',
+     brand: 'dior',
+     category: 'rompers/jumpsuits',
+     color: 'white-smoke',
+     avt: 'http://dummyimage.com/121x244.png/dddddd/000000',
+     sizesName: 'M, S, L',
+     sizesQuantity: '10, 20, 301'
+    };
+    const sizesName = 'M, S';
+    const sizesQuantity = '10, 20, 301';
+    const resAfterAdd = await addProduct(productObj); 
+    const productId = resAfterAdd.productId;
+    const resAfterUpdate = await updateProduct(productId, sizesName, sizesQuantity, productObj.category);  
+    
+    expect(resAfterUpdate.status).toEqual(400);
+  
+  })
 
    it('Update failed can not found product', async ()=>{
     const productObj = {
@@ -76,7 +97,7 @@ afterAll(async () => await dbHandler.closeDatabase());
     };
     const resAfterAdd = await addProduct(productObj); 
     const productId = '5ec4c6b3549ee716866558d1';
-    const resAfterUpdate = await updateProduct(productId, productObj.sizesName, productObj.sizesQuantity);  
+    const resAfterUpdate = await updateProduct(productId, productObj.sizesName, productObj.sizesQuantity, productObj.category);  
     
     expect(resAfterUpdate.status).toEqual(404);
   
@@ -453,7 +474,6 @@ describe('Add Product success',  ()=>{
       sizesQuantity: '10, 20, 301'
     };
     const res = await addProduct(productObj);
-    console.log(res.content);
     expect(res.status).toEqual(400);
     expect(res.success).toEqual(false);
   })
@@ -470,7 +490,6 @@ describe('Add Product success',  ()=>{
       sizesQuantity: '10, 20, 301'
     };
     const res = await addProduct(productObj);
-    console.log(res.content);
     expect(res.status).toEqual(400);
     expect(res.success).toEqual(false);
   })
@@ -487,7 +506,6 @@ describe('Add Product success',  ()=>{
       sizesQuantity: '10, 20, 301'
     };
     const res = await addProduct(productObj);
-    console.log(res.content);
     expect(res.status).toEqual(400);
     expect(res.success).toEqual(false);
   })
