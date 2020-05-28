@@ -8,7 +8,8 @@ module.exports.addProduct = async (product)=>{
       return {success: false, status: 400, content:'add failed, you are missing some field'};
     }
     else{
-      const newProductObjDecId = await Product.find({}).countDocuments('_id')+1;
+      const newProductObjDecId = await Product.find({}).countDocuments('_id');
+      console.log(newProductObjDecId);
       let {sizesName, sizesQuantity, name, price, avt, brand, category, color } = product;
       const rating = '0';
       if (validateInputForSizeInput(sizesName, sizesQuantity) === false){
@@ -30,8 +31,8 @@ module.exports.addProduct = async (product)=>{
           }
       
         const newIdOfProduct = await newProductObj.save();
-      
-        return {success: true, status: 201, content:'add product success', productId: newIdOfProduct._id};
+        console.log(newIdOfProduct)
+        return {success: true, status: 201, content:'add product success', product: newIdOfProduct};
       }
     }
 };
@@ -40,7 +41,10 @@ module.exports.deleteProduct = async (productId)=>{
   if (!productId){
     return {success: false, status: 400, content:'product id is empty'};
   }
+  const result = Product.findOne({_id:productId});
+  console.log(result);
   const responseAfterDelete = await Product.findOneAndDelete({_id: productId});
+  
   if (responseAfterDelete === null){
     return {success: false, status:404, content:'product does not exist', productId:''};
   }

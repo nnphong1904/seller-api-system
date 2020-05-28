@@ -42,7 +42,8 @@ router.post('/', upload.none() ,async (req, res)=>{
   // console.log(req.body)
   const product = {...req.body};
   const responseAfterAddProduct = await addProduct(product); 
-  res.status(responseAfterAddProduct.status).json({responseContent: responseAfterAddProduct.content});
+
+  res.status(responseAfterAddProduct.status).json({responseContent: responseAfterAddProduct.content, product: responseAfterAddProduct.product});
   // res.end();
 })
 
@@ -51,6 +52,8 @@ router.delete('/:productId', async (req, res)=>{
   const productId = req.params.productId;
   const responseAfterDeleteProduct = await deleteProduct(productId);
   res.status(responseAfterDeleteProduct.status).json({productId:responseAfterDeleteProduct.productId});
+  // console.log(productId);
+  // res.end();
 })
 
 router.put('/:productId', upload.none() ,async (req, res)=>{
