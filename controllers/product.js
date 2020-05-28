@@ -15,14 +15,8 @@ module.exports.addProduct = async (product)=>{
         return {success: false, status: 400, content: 'add failed, you forget to input quantity of some size'};
       }
       else{
-        // const colorsList = color.split(',').map(color=>color.trim());
-        // const categoryList = category.split(',').map(categoryElement=>categoryElement.trim());
-        
+       
         const newSizes = [...generateSizesObject(sizesName, sizesQuantity)];
-        // const newProduct = {
-        //                     name, price, rating, avt, brand, category:[...categoryList] , color: [...colorsList],
-        //                     decId: newProductObjDecId+1,sizes:[...newSizes]
-        //                   };
         const newProduct = {
           name, price, rating, avt, brand, category , color,
           decId: newProductObjDecId+1,sizes:[...newSizes]
@@ -54,28 +48,30 @@ module.exports.deleteProduct = async (productId)=>{
     return {success: true, status: 200, content:'remove product success', productId:responseAfterDelete._id};
   }
 }
-module.exports.updateProduct = async (productId, sizesName, sizesQuantity)=>{
+module.exports.updateProduct = async (productId, sizesName, sizesQuantity, category)=>{
   if (!productId){
     return {success: false, status:404, content:'product not found'};
   }
   else
   {
     let newSizesObject;
-
+    if (!category){
+      return {success: false, status: 400, content:'missing category'};
+    }
     if (generateSizesObject(sizesName, sizesQuantity) === null){
       return {success: false, status: 400, content:'fill in new sizes for product'};
     }
-    else{
+   
       const oldProduct =  await Product.findOne({_id:productId});
       if (oldProduct === null){
         return {success: false, status: 404, content: 'product not found'};
       }
       else{
         newSizesObject = [...generateSizesObject(sizesName,sizesQuantity)];
-        const newProduct = {...oldProduct._doc, sizes: {...newSizesObject}};
+    
+        const newProduct = {...oldProduct._doc, sizes: [...newSizesObject], category: category};
         const responseAfterUpdate = await Product.findByIdAndUpdate(productId, newProduct, {new:true });
         return {success: true, status: 200, content: 'update success', productId: responseAfterUpdate._id};
       }
-    }
   }
 }
