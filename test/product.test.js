@@ -35,8 +35,9 @@ afterAll(async () => await dbHandler.closeDatabase());
       sizesQuantity: '10, 20, 301'
      };
      const resAfterAdd = await addProduct(productObj); 
-     const productId = resAfterAdd.productId;
+     const productId = resAfterAdd.product._id;
      const resAfterUpdate = await updateProduct(productId, productObj.sizesName, productObj.sizesQuantity, productObj.category);  
+     console.log(productId)
      expect(resAfterAdd.status).toEqual(201);
      expect(resAfterUpdate.status).toEqual(200);
      expect(resAfterUpdate.productId).toEqual(productId);
@@ -76,7 +77,7 @@ afterAll(async () => await dbHandler.closeDatabase());
     const sizesName = 'M, S';
     const sizesQuantity = '10, 20, 301';
     const resAfterAdd = await addProduct(productObj); 
-    const productId = resAfterAdd.productId;
+    const productId = resAfterAdd.product._id;
     const resAfterUpdate = await updateProduct(productId, sizesName, sizesQuantity, productObj.category);  
     
     expect(resAfterUpdate.status).toEqual(400);
@@ -118,7 +119,7 @@ afterAll(async () => await dbHandler.closeDatabase());
      const newSizesName = 'S, L';
      const newSizesQuantity ='10';               
      const resAfterAdd = await addProduct(productObj); 
-     const productId = resAfterAdd.productId;
+     const productId = resAfterAdd.product._id;
      const resAfterUpdate = await updateProduct(productId, newSizesName, newSizesQuantity);  
     expect(resAfterUpdate.status).toEqual(400);
   })
@@ -139,7 +140,7 @@ afterAll(async () => await dbHandler.closeDatabase());
       sizesQuantity: '10, 20, 301'
     };
     const resAfterAdd = await addProduct(productObj); 
-    const productId = resAfterAdd.productId;
+    const productId = resAfterAdd.product._id;
     const resAfterDelete = await deleteProduct(productId);
     expect(resAfterAdd.status).toEqual(201);
     expect(resAfterDelete.status).toEqual(200);

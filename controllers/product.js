@@ -9,7 +9,7 @@ module.exports.addProduct = async (product)=>{
     }
     else{
       const newProductObjDecId = await Product.find({}).countDocuments('_id');
-      console.log(newProductObjDecId);
+
       let {sizesName, sizesQuantity, name, price, avt, brand, category, color } = product;
       const rating = '0';
       if (validateInputForSizeInput(sizesName, sizesQuantity) === false){
@@ -31,7 +31,7 @@ module.exports.addProduct = async (product)=>{
           }
       
         const newIdOfProduct = await newProductObj.save();
-        console.log(newIdOfProduct)
+
         return {success: true, status: 201, content:'add product success', product: newIdOfProduct};
       }
     }
@@ -41,8 +41,6 @@ module.exports.deleteProduct = async (productId)=>{
   if (!productId){
     return {success: false, status: 400, content:'product id is empty'};
   }
-  const result = Product.findOne({_id:productId});
-  console.log(result);
   const responseAfterDelete = await Product.findOneAndDelete({_id: productId});
   
   if (responseAfterDelete === null){
@@ -53,6 +51,7 @@ module.exports.deleteProduct = async (productId)=>{
   }
 }
 module.exports.updateProduct = async (productId, sizesName, sizesQuantity, category)=>{
+
   if (!productId){
     return {success: false, status:404, content:'product not found'};
   }
